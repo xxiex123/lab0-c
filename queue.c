@@ -63,7 +63,8 @@ bool q_insert_head(queue_t *q, char *s)
         free(newh);
         return false;
     }
-    strcpy(newh->value, s);
+    for (int i = 0; i < strlen(s) + 1; i++)
+        newh->value[i] = s[i];
     newh->next = q->head;
 
     if (q->head == NULL) {
@@ -96,7 +97,8 @@ bool q_insert_tail(queue_t *q, char *s)
         free(newh);
         return false;
     }
-    strcpy(newh->value, s);
+    for (int i = 0; i < strlen(s) + 1; i++)
+        newh->value[i] = s[i];
     newh->next = NULL;
 
     if (q->head == NULL) {
