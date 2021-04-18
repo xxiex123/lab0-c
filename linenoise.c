@@ -1327,3 +1327,11 @@ int linenoiseHistoryLoad(const char *filename)
     fclose(fp);
     return 0;
 }
+
+void linenoiseFreeAll()
+{
+    for (int i = 0; i < history_len; i++)
+        free(history[i]);
+    free(history);
+    return;
+}

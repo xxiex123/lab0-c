@@ -783,6 +783,8 @@ int main(int argc, char *argv[])
         set_logfile(logfile_name);
 
     add_quit_helper(queue_quit);
+    // edited for valgrind error
+    Freelinenoise();
 
     bool ok = true;
     ok = ok && run_console(infile_name);

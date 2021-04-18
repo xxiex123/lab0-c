@@ -97,16 +97,23 @@ bool q_insert_tail(queue_t *q, char *s)
 
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (q == NULL || q->head == NULL)
+    if (q == NULL || q->size == 0)
         return false;
 
     list_ele_t *temp = q->head;
     q->head = q->head->next;
 
-    if (sp != NULL) {
-        for (int i = 0; i < bufsize - 1; i++)
-            sp[i] = temp->value[i];
-        sp[bufsize - 1] = '\0';
+    if (sp) {
+        if (strlen(temp->value) >= bufsize - 1) {
+            for (int i = 0; i < bufsize - 1; i++)
+                sp[i] = temp->value[i];
+            sp[bufsize - 1] = '\0';
+        } else {
+            int i;
+            for (i = 0; i < strlen(temp->value) + 1; i++)
+                sp[i] = temp->value[i];
+            sp[i + 1] = '\0';
+        }
     }
 
     free(temp->value);

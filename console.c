@@ -669,3 +669,10 @@ bool run_console(char *infile_name)
 
     return err_cnt == 0;
 }
+
+// edited for valgrind test error
+void Freelinenoise()
+{
+    linenoiseFreeAll();
+    return;
+}

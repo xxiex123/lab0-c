@@ -68,6 +68,8 @@ void linenoiseSetMultiLine(int ml);
 void linenoisePrintKeyCodes(void);
 void linenoiseMaskModeEnable(void);
 void linenoiseMaskModeDisable(void);
+// edited for valgrind test error
+void linenoiseFreeAll(void);
 #ifdef __cplusplus
 }
 #endif
