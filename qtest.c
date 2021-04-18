@@ -784,7 +784,7 @@ int main(int argc, char *argv[])
 
     add_quit_helper(queue_quit);
     // edited for valgrind error
-    Freelinenoise();
+    linenoiseFreeAll();
 
     bool ok = true;
     ok = ok && run_console(infile_name);

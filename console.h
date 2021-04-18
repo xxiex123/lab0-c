@@ -80,7 +80,4 @@ bool run_console(char *infile_name);
 /* Callback function to complete command by linenoise */
 void completion(const char *buf, linenoiseCompletions *lc);
 
-// edited for valgrind test error
-void Freelinenoise(void);
-
 #endif /* LAB0_CONSOLE_H */
