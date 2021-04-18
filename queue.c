@@ -9,7 +9,6 @@ queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
     if (q == NULL) {
-        printf("malloc fail.\n");
         return NULL;
     }
     q->head = q->tail = NULL;
@@ -26,18 +25,12 @@ void q_free(queue_t *q)
         return;
     }
 
-    list_ele_t *temp;
-
-    temp = q->head->next;
-    q->head->next = NULL;
-    free(q->head->value);
-    free(q->head);
-    while (temp) {
-        q->head = temp;
-        temp = temp->next;
-        q->head->next = NULL;
-        free(q->head->value);
-        free(q->head);
+    while (q->head) {
+        list_ele_t *temp;
+        temp = q->head;
+        q->head = q->head->next;
+        free(temp->value);
+        free(temp);
     }
     free(q);
 }
@@ -45,7 +38,6 @@ void q_free(queue_t *q)
 bool q_insert_head(queue_t *q, char *s)
 {
     if (q == NULL) {
-        printf("q is NULL.\n");
         return false;
     }
 
@@ -53,26 +45,20 @@ bool q_insert_head(queue_t *q, char *s)
     newh = malloc(sizeof(list_ele_t));
 
     if (newh == NULL) {
-        printf("malloc error.\n");
         return false;
     }
     newh->value = malloc(sizeof(char) * (strlen(s) + 1));
 
     if (newh->value == NULL) {
-        printf("malloc error.\n");
         free(newh);
         return false;
     }
     for (int i = 0; i < strlen(s) + 1; i++)
         newh->value[i] = s[i];
     newh->next = q->head;
-
-    if (q->head == NULL) {
-        q->head = newh;
+    if (q->head == NULL)
         q->tail = newh;
-    } else {
-        q->head = newh;
-    }
+    q->head = newh;
     q->size++;
     return true;
 }
@@ -80,27 +66,24 @@ bool q_insert_head(queue_t *q, char *s)
 bool q_insert_tail(queue_t *q, char *s)
 {
     if (q == NULL) {
-        printf("q is NULL.\n");
         return false;
     }
     list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
 
     if (newh == NULL) {
-        printf("malloc error.\n");
         return false;
     }
     newh->value = malloc(sizeof(char) * (strlen(s) + 1));
 
     if (newh->value == NULL) {
-        printf("malloc error\n");
         free(newh);
         return false;
     }
-    for (int i = 0; i < strlen(s) + 1; i++)
+    for (int i = 0; i < strlen(s) + 1; i++) {
         newh->value[i] = s[i];
+    }
     newh->next = NULL;
-
     if (q->head == NULL) {
         q->head = newh;
         q->tail = newh;
@@ -114,37 +97,29 @@ bool q_insert_tail(queue_t *q, char *s)
 
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (q == NULL) {
-        printf("q is NULL.");
+    if (q == NULL || q->head == NULL)
         return false;
-    } else if (q->head == NULL) {
-        printf("q is empty.");
-        return false;
-    }
 
-    list_ele_t *temp;
+    list_ele_t *temp = q->head;
+    q->head = q->head->next;
 
     if (sp != NULL) {
         for (int i = 0; i < bufsize - 1; i++)
-            sp[i] = q->head->value[i];
+            sp[i] = temp->value[i];
         sp[bufsize - 1] = '\0';
     }
-    free(q->head->value);
 
-    temp = q->head->next;
-    q->head->next = NULL;
-    free(q->head);
-    q->head = temp;
+    free(temp->value);
+    free(temp);
     if (q->head == NULL)
         q->tail = NULL;
-    q->size = q->size - 1;
+    q->size--;
     return true;
 }
 
 int q_size(queue_t *q)
 {
     if (q == NULL) {
-        printf("q is NULL.");
         return 0;
     } else
         return q->size;
@@ -152,9 +127,7 @@ int q_size(queue_t *q)
 
 void q_reverse(queue_t *q)
 {
-    if (q == NULL)
-        return;
-    else if (q->size <= 1)
+    if (q == NULL || q->size <= 1)
         return;
 
     list_ele_t *tempOne;
